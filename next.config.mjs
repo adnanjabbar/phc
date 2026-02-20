@@ -3,9 +3,7 @@ const nextConfig = {
   images: {
     domains: ["localhost", "138.197.39.100"],
   },
-  experimental: {
-    serverComponentsExternalPackages: ["bcryptjs"],
-  },
+  serverExternalPackages: ["bcryptjs"],
 };
 
 export default nextConfig;
