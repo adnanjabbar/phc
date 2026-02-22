@@ -1,72 +1,78 @@
-import { UserRole, FacilityCategory, IndicatorFrequency, ComplianceStatus } from "@prisma/client";
-
-export const ROLE_LABELS: Record<UserRole, string> = {
-  REGX: "Super Admin",
-  ADMIN: "Facility Administrator",
-  MSDS_FOCAL: "MSDS Focal Person",
-};
-
-export const FACILITY_CATEGORY_LABELS: Record<FacilityCategory, string> = {
-  HOSPITAL_CAT_1: "Hospital Category 1",
-  HOSPITAL_CAT_2: "Hospital Category 2",
-  HOSPITAL_CAT_3: "Hospital Category 3",
-  DENTAL_CARE: "Dental Care",
-  FAMILY_MEDICINE: "Family Medicine",
+export const FACILITY_CATEGORY_LABELS: Record<string, string> = {
+  HOSPITAL_CAT_1: "Hospital (Cat-I, 50+ beds)",
+  HOSPITAL_CAT_2: "Hospital (Cat-II, 16-50 beds)",
+  HOSPITAL_CAT_3: "Hospital (Cat-III, up to 15 beds)",
+  DENTAL_CARE: "Dental Clinic",
+  FAMILY_MEDICINE: "GP / Family Medicine Clinic",
   CLINICAL_LAB: "Clinical Laboratory",
   BLOOD_BANK: "Blood Bank",
   DIAGNOSTIC_CENTER: "Diagnostic Center",
   MATERNITY_HOME: "Maternity Home",
   EYE_HOSPITAL: "Eye Hospital",
+  DIALYSIS: "Dialysis Facility",
+  PSYCHIATRIC: "Psychiatric / Addiction Treatment",
+  IVF_FERTILITY: "IVF / Fertility Centre",
+  COLLECTION_CENTER: "Collection Centre",
+  HOMEOPATHIC: "Homeopathic Clinic",
+  RADIOLOGICAL: "Radiological Diagnostic Centre",
+  BHU: "Basic Health Unit (BHU)",
   OTHER: "Other",
 };
 
-export const FREQUENCY_LABELS: Record<IndicatorFrequency, string> = {
-  WEEKLY: "Weekly",
-  BIMONTHLY: "Bi-Monthly",
-  MONTHLY: "Monthly",
-  QUARTERLY: "Quarterly",
-  HALF_YEARLY: "Half Yearly",
-  YEARLY: "Yearly",
-  ONE_TIME: "One Time",
+export const MSDS_CATEGORY_MAP: Record<string, string> = {
+  HOSPITAL_CAT_1: "HOSPITAL_CAT_1",
+  HOSPITAL_CAT_2: "HOSPITAL_CAT_1",
+  HOSPITAL_CAT_3: "HOSPITAL_CAT_1",
+  DENTAL_CARE: "DENTAL_CARE",
+  DIALYSIS: "DIAGNOSTIC_CENTER",
+  PSYCHIATRIC: "OTHER",
+  IVF_FERTILITY: "OTHER",
+  CLINICAL_LAB: "CLINICAL_LAB",
+  DIAGNOSTIC_CENTER: "DIAGNOSTIC_CENTER",
+  FAMILY_MEDICINE: "FAMILY_MEDICINE",
+  BLOOD_BANK: "BLOOD_BANK",
+  MATERNITY_HOME: "MATERNITY_HOME",
+  EYE_HOSPITAL: "EYE_HOSPITAL",
+  COLLECTION_CENTER: "COLLECTION_CENTER",
+  HOMEOPATHIC: "HOMEOPATHIC",
+  RADIOLOGICAL: "RADIOLOGICAL",
+  BHU: "BHU",
+  OTHER: "OTHER",
 };
 
-export const COMPLIANCE_STATUS_LABELS: Record<ComplianceStatus, string> = {
+export const APPROVAL_STATUS_LABELS: Record<string, string> = {
+  PENDING: "Pending Approval",
+  APPROVED: "Approved",
+  REJECTED: "Rejected",
+  SUSPENDED: "Suspended",
+};
+
+export const PAYMENT_TYPE_LABELS: Record<string, string> = {
+  FACILITY_REGISTRATION: "Facility Registration",
+  ANNUAL_SUBSCRIPTION: "Annual Subscription",
+  TRAINING_FEE: "Training Fee",
+  CONSULTANT_FEE: "Consultant Fee",
+  PENALTY: "Penalty",
+  OTHER: "Other",
+};
+
+export const SUBSCRIPTION_PLANS = {
+  standard: { name: "Standard", price: 50000, features: ["MSDS Compliance Tracking", "Self-Assessment Tools", "Basic Reporting"] },
+  professional: { name: "Professional", price: 100000, features: ["Everything in Standard", "Consultant Support", "Advanced Analytics", "Priority Training Access"] },
+  enterprise: { name: "Enterprise", price: 200000, features: ["Everything in Professional", "Dedicated Consultant", "Custom Reporting", "API Access", "White-label"] },
+};
+
+export const ROLE_LABELS: Record<string, string> = {
+  REGX: "RegX Super Admin",
+  ADMIN: "Facility Admin",
+  MSDS_FOCAL: "MSDS Focal Person",
+  CONSULTANT: "PHC Consultant",
+};
+
+export const COMPLIANCE_STATUS_LABELS: Record<string, string> = {
   COMPLIANT: "Compliant",
   NON_COMPLIANT: "Non-Compliant",
   PARTIALLY_COMPLIANT: "Partially Compliant",
   NOT_ASSESSED: "Not Assessed",
   IN_PROGRESS: "In Progress",
 };
-
-export const COMPLIANCE_STATUS_COLORS: Record<ComplianceStatus, string> = {
-  COMPLIANT: "bg-green-100 text-green-800",
-  NON_COMPLIANT: "bg-red-100 text-red-800",
-  PARTIALLY_COMPLIANT: "bg-yellow-100 text-yellow-800",
-  NOT_ASSESSED: "bg-gray-100 text-gray-800",
-  IN_PROGRESS: "bg-blue-100 text-blue-800",
-};
-
-export const REGX_NAV_ITEMS = [
-  { label: "Dashboard", href: "/regx", icon: "LayoutDashboard" },
-  { label: "All Facilities", href: "/regx/facilities", icon: "Building2" },
-  { label: "All Users", href: "/regx/users", icon: "Users" },
-  { label: "Reports", href: "/regx/reports", icon: "FileBarChart" },
-  { label: "Settings", href: "/regx/settings", icon: "Settings" },
-];
-
-export const ADMIN_NAV_ITEMS = [
-  { label: "Dashboard", href: "/admin", icon: "LayoutDashboard" },
-  { label: "My Facility", href: "/admin/facility", icon: "Building2" },
-  { label: "Indicators", href: "/admin/indicators", icon: "ClipboardList" },
-  { label: "MSDS Team", href: "/admin/team", icon: "Users" },
-  { label: "Reports", href: "/admin/reports", icon: "FileBarChart" },
-  { label: "Settings", href: "/admin/settings", icon: "Settings" },
-];
-
-export const FOCAL_NAV_ITEMS = [
-  { label: "Dashboard", href: "/focal", icon: "LayoutDashboard" },
-  { label: "Questionnaires", href: "/focal/questionnaires", icon: "ClipboardList" },
-  { label: "Evidence Upload", href: "/focal/evidence", icon: "Upload" },
-  { label: "Drills & Activities", href: "/focal/drills", icon: "Activity" },
-  { label: "My Submissions", href: "/focal/submissions", icon: "FileCheck" },
-];
