@@ -4,7 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "postinstall": "prisma generate",
+    "prisma:generate": "prisma generate",
     "build": "next build",
+    "prebuild": "pnpm prisma:generate",
     "start": "next start",
     "lint": "next lint"
   },

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
@@ -55,7 +56,7 @@ export default async function DrillDetailPage({ params }: { params: Promise<{ id
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
             {drill.photos.map((p) => (
               <div key={p.id} className="relative group">
-                <img src={p.filePath} alt={p.caption || "Drill photo"} className="w-full h-40 object-cover rounded-lg border" />
+                <Image src={p.filePath} alt={p.caption || "Drill photo"} width={320} height={160} className="w-full h-40 object-cover rounded-lg border" unoptimized />
                 {p.caption && <p className="text-xs text-gray-500 mt-1 truncate">{p.caption}</p>}
               </div>
             ))}
