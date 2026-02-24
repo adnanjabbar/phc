@@ -25,9 +25,11 @@ export default async function CompliancePage() {
     orderBy: { code: "asc" },
   });
 
-  const totalIndicators = standards.reduce((sum, s) => sum + s.indicators.length, 0);
+  const totalIndicators = standards.reduce((sum: number, standard) => sum + standard.indicators.length, 0);
   const assignedCount = standards.reduce(
-    (sum, s) => sum + s.indicators.filter(i => i.facilityIndicators.length > 0).length, 0
+    (sum: number, standard) =>
+      sum + standard.indicators.filter((indicator) => indicator.facilityIndicators.length > 0).length,
+    0
   );
   const isInitialized = assignedCount > 0;
 

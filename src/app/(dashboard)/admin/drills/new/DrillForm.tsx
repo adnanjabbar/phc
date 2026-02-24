@@ -1,5 +1,6 @@
 "use client";
-import { useState } from "react";
+import Image from "next/image";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 
 const DRILL_TYPES = ["Fire Drill", "Evacuation Drill", "Code Blue", "Infection Control", "Disaster Response", "Chemical Spill", "Other"];
@@ -10,6 +11,18 @@ export default function DrillForm({ facilityId }: { facilityId: string }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const router = useRouter();
+
+  const photoPreviews = useMemo(
+    () => photos.map((photo) => ({ name: photo.name, url: URL.createObjectURL(photo) })),
+    [photos]
+  );
+
+  useEffect(() => {
+    return () => {
+      photoPreviews.forEach((preview) => URL.revokeObjectURL(preview.url));
+    };
+  }, [photoPreviews]);
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -97,11 +110,11 @@ export default function DrillForm({ facilityId }: { facilityId: string }) {
         <label className="block text-sm font-medium text-gray-700 mb-1">Photo Evidence</label>
         <input type="file" multiple accept="image/*" onChange={(e) => setPhotos(Array.from(e.target.files || []))}
           className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" />
-        {photos.length > 0 && (
+        {photoPreviews.length > 0 && (
           <div className="flex gap-2 mt-2">
-            {photos.map((p, i) => (
-              <div key={i} className="relative">
-                <img src={URL.createObjectURL(p)} alt="" className="w-16 h-16 object-cover rounded border" />
+            {photoPreviews.map((preview, i) => (
+              <div key={preview.url} className="relative">
+                <Image src={preview.url} alt={preview.name} width={64} height={64} className="w-16 h-16 object-cover rounded border" unoptimized />
                 <button type="button" onClick={() => setPhotos(photos.filter((_, j) => j !== i))}
                   className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white rounded-full text-[10px] flex items-center justify-center">×</button>
               </div>
