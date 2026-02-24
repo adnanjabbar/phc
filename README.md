@@ -1,36 +1,82 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# PHC MSDS Portal
 
-## Getting Started
+A Next.js 15 + Prisma application for PHC/MSDS workflows across REGX, facility admins, focal persons, and consultants.
 
-First, run the development server:
+## Current Status
+
+I validated the repository can now build successfully after ensuring Prisma Client generation is part of the normal install/build lifecycle.
+
+## Tech Stack
+
+- Next.js 15 (App Router)
+- TypeScript
+- Tailwind CSS
+- NextAuth (v5 beta)
+- Prisma ORM + PostgreSQL driver adapter
+
+## Quick Start
+
+### 1) Install dependencies
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+> `postinstall` now auto-runs `prisma generate`, so Prisma client types are available immediately.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 2) Configure environment
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Create `.env` with your database + auth settings:
 
-## Learn More
+```bash
+DATABASE_URL="postgresql://USER:PASSWORD@HOST:5432/DBNAME"
+AUTH_SECRET="replace-with-random-secret"
+NEXTAUTH_URL="http://localhost:3000"
+```
 
-To learn more about Next.js, take a look at the following resources:
+### 3) Generate Prisma client and sync schema
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+pnpm db:generate
+pnpm db:push
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 4) Seed default data
 
-## Deploy on Vercel
+```bash
+pnpm db:seed
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 5) Run app
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+pnpm dev
+```
+
+Open `http://localhost:3000`.
+
+## Build for Production
+
+```bash
+pnpm build
+pnpm start
+```
+
+> `prebuild` now runs `prisma generate` automatically to prevent missing PrismaClient type/runtime issues in CI or fresh servers.
+
+## DB Utility Scripts
+
+- `pnpm db:generate` → runs `prisma generate`
+- `pnpm db:push` → pushes schema to DB
+- `pnpm db:seed` → seeds baseline users/facility
+
+## Seeded Accounts
+
+- REGX super admin: `regx / RegX@2026`
+- Facility admin: `lghadmin / Admin@2026`
+- MSDS focal user: `lghfocal / Focal@2026`
+
+## Notes
+
+- There are existing lint warnings about `<img>` usage in drill pages; these are non-blocking for builds.
+- If you want, I can do a second pass focused on “massive features” (prioritized roadmap + implementation) once you list the exact feature set.
