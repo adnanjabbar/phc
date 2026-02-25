@@ -2,6 +2,7 @@ import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { COMPLIANCE_STATUS_LABELS } from "@/lib/constants";
+import { ReportDownloadButton } from "@/components/ReportDownloadButton";
 
 export default async function FocalReportsPage() {
   const session = await auth();
@@ -18,7 +19,10 @@ export default async function FocalReportsPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold text-gray-900">My Reports</h1>
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold text-gray-900">My Reports</h1>
+        <ReportDownloadButton />
+      </div>
       <div className="bg-white rounded-lg shadow p-6 text-center">
         <p className="text-4xl font-bold text-blue-600">{total > 0 ? Math.round((compliant/total)*100) : 0}%</p>
         <p className="text-gray-500 mt-2">Overall Compliance Score</p>

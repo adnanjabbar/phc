@@ -1,7 +1,7 @@
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
-import { COMPLIANCE_STATUS_LABELS } from "@/lib/constants";
+import { COMPLIANCE_STATUS_LABELS, INDICATOR_FREQUENCY_LABELS } from "@/lib/constants";
 import InitializeButton from "./InitializeButton";
 
 export default async function CompliancePage() {
@@ -85,7 +85,7 @@ export default async function CompliancePage() {
                 <div key={ind.id} className="px-6 py-3 flex items-start justify-between gap-4 hover:bg-gray-50">
                   <div className="flex-1 min-w-0">
                     <p className="text-sm text-gray-900">{ind.title}</p>
-                    <p className="text-xs text-gray-400 mt-0.5">{ind.code} · {ind.frequency}</p>
+                    <p className="text-xs text-gray-400 mt-0.5">{ind.code} · {INDICATOR_FREQUENCY_LABELS[ind.frequency] ?? ind.frequency}{ind.requiresEvidence ? " · Evidence required" : ""}</p>
                   </div>
                   <span className={`px-2 py-0.5 text-[10px] rounded-full whitespace-nowrap ${statusColors[status]}`}>
                     {COMPLIANCE_STATUS_LABELS[status]}

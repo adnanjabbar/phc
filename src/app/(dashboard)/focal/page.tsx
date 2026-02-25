@@ -1,7 +1,7 @@
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
-import { COMPLIANCE_STATUS_LABELS, FACILITY_CATEGORY_LABELS } from "@/lib/constants";
+import { COMPLIANCE_STATUS_LABELS, FACILITY_CATEGORY_LABELS, INDICATOR_FREQUENCY_LABELS } from "@/lib/constants";
 import { ClipboardList, AlertTriangle, CheckCircle2 } from "lucide-react";
 
 export default async function FocalDashboard() {
@@ -113,7 +113,7 @@ export default async function FocalDashboard() {
                     className="px-6 py-3 flex items-start justify-between gap-4 hover:bg-blue-50 cursor-pointer block">
                     <div className="flex-1 min-w-0">
                       <p className="text-sm text-gray-800">{fi.indicator.title}</p>
-                      <p className="text-xs text-gray-400 mt-0.5">{fi.indicator.code} · {fi.indicator.frequency}</p>
+                      <p className="text-xs text-gray-400 mt-0.5">{fi.indicator.code} · {INDICATOR_FREQUENCY_LABELS[fi.indicator.frequency] ?? fi.indicator.frequency}{fi.indicator.requiresEvidence ? " · Evidence required" : ""}</p>
                     </div>
                     <span className={`px-2 py-0.5 text-[10px] rounded-full whitespace-nowrap ${
                       fi.status === "COMPLIANT" ? "bg-emerald-100 text-emerald-700" :
