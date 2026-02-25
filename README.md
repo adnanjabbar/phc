@@ -76,6 +76,12 @@ pnpm start
 - Facility admin: `lghadmin / Admin@2026`
 - MSDS focal user: `lghfocal / Focal@2026`
 
+## Deployment
+
+- Run `./deploy.sh` on the server after `git pull` (see script in repo root).
+- **ChunkLoadError / 400 on RegX or consultant pages:** Next.js chunk URLs contain parentheses (e.g. `/_next/static/chunks/app/(dashboard)/regx/consultants/page-xxx.js`). If nginx or another reverse proxy returns **400 Bad Request**, it may be rejecting paths with `(` and `)`. Proxy the full URI to Next.js without regex on the path; see `docs/nginx-nextjs.conf` for an example.
+- Set `NEXTAUTH_URL` on the server to your public URL.
+
 ## Notes
 
 - There are existing lint warnings about `<img>` usage in drill pages; these are non-blocking for builds.
