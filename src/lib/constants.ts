@@ -76,3 +76,29 @@ export const COMPLIANCE_STATUS_LABELS: Record<string, string> = {
   NOT_ASSESSED: "Not Assessed",
   IN_PROGRESS: "In Progress",
 };
+
+export const INDICATOR_FREQUENCY_LABELS: Record<string, string> = {
+  WEEKLY: "Weekly",
+  BIMONTHLY: "Twice per month",
+  MONTHLY: "Monthly",
+  QUARTERLY: "Quarterly",
+  HALF_YEARLY: "Every 6 months",
+  YEARLY: "Yearly",
+  ONE_TIME: "One-time",
+};
+
+/** Short guidance on how to fulfill common MSDS indicator types (healthcare compliance). */
+export const FULFILLMENT_TIPS: Record<string, string> = {
+  default:
+    "Maintain documented evidence (policies, logs, photos, or certificates) as required. Update status and upload evidence before the due date.",
+  fire_drill:
+    "Conduct a timed evacuation drill, record participants and outcome, and upload photo evidence. Document any issues and corrective actions.",
+  infection_control:
+    "Follow IPC guidelines: hand hygiene, PPE, waste segregation, and sterilization logs. Keep training records and inspection checklists.",
+  documentation:
+    "Keep written policies, SOPs, or registers up to date and accessible. Ensure they are signed, dated, and version-controlled.",
+  staffing:
+    "Maintain staff roster, qualifications, and training records. Ensure minimum required staff per shift as per facility category.",
+  equipment:
+    "Maintain equipment register, calibration/maintenance logs, and ensure functional equipment as per standard.",
+};

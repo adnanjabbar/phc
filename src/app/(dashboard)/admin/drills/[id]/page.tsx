@@ -1,8 +1,8 @@
-import Image from "next/image";
 import Link from "next/link";
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
+import { UploadImage } from "@/components/UploadImage";
 
 export default async function DrillDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const session = await auth();
@@ -56,7 +56,7 @@ export default async function DrillDetailPage({ params }: { params: Promise<{ id
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
             {drill.photos.map((p) => (
               <div key={p.id} className="relative group">
-                <Image src={p.filePath} alt={p.caption || "Drill photo"} width={320} height={160} className="w-full h-40 object-cover rounded-lg border" unoptimized />
+                <UploadImage filePath={p.filePath} alt={p.caption || "Drill photo"} size="medium" className="w-full h-40 object-cover rounded-lg border" />
                 {p.caption && <p className="text-xs text-gray-500 mt-1 truncate">{p.caption}</p>}
               </div>
             ))}

@@ -1,7 +1,21 @@
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
+import { getUploadUrl } from "@/lib/upload";
+import { INDICATOR_FREQUENCY_LABELS, FULFILLMENT_TIPS } from "@/lib/constants";
+import { BookOpen, CheckCircle2, FileCheck } from "lucide-react";
+import Link from "next/link";
 import AssessmentForm from "./AssessmentForm";
+
+function getFulfillmentTip(indicator: { title: string; description: string; guidance: string }): string {
+  const text = `${indicator.title} ${indicator.description} ${indicator.guidance}`.toLowerCase();
+  if (text.includes("drill") || text.includes("evacuation") || text.includes("fire")) return FULFILLMENT_TIPS.fire_drill;
+  if (text.includes("infection") || text.includes("ipc") || text.includes("hygiene")) return FULFILLMENT_TIPS.infection_control;
+  if (text.includes("policy") || text.includes("sop") || text.includes("register") || text.includes("document")) return FULFILLMENT_TIPS.documentation;
+  if (text.includes("staff") || text.includes("personnel") || text.includes("roster")) return FULFILLMENT_TIPS.staffing;
+  if (text.includes("equipment") || text.includes("calibration") || text.includes("maintenance")) return FULFILLMENT_TIPS.equipment;
+  return FULFILLMENT_TIPS.default;
+}
 
 export default async function AssessmentPage({ params }: { params: Promise<{ id: string }> }) {
   const session = await auth();
@@ -24,26 +38,54 @@ export default async function AssessmentPage({ params }: { params: Promise<{ id:
     include: { user: { select: { fullName: true } }, evidence: true },
   });
 
+  const ind = facilityIndicator.indicator;
+  const frequencyLabel = INDICATOR_FREQUENCY_LABELS[ind.frequency] ?? ind.frequency;
+  const fulfillmentTip = getFulfillmentTip(ind);
+
   return (
     <div className="max-w-3xl mx-auto space-y-6">
       <div>
-        <a href="/focal" className="text-sm text-blue-600 hover:underline">← Back to Assessment</a>
-        <h1 className="text-xl font-bold text-gray-900 mt-2">{facilityIndicator.indicator.title}</h1>
-        <p className="text-sm text-gray-500 mt-1">{facilityIndicator.indicator.standard.title} · {facilityIndicator.indicator.code}</p>
+        <Link href="/focal" className="text-sm text-blue-600 hover:underline">← Back to Assessment</Link>
+        <div className="mt-2 flex items-center gap-2 flex-wrap">
+          <span className="text-xs font-mono bg-blue-50 text-blue-700 px-2 py-1 rounded">{ind.code}</span>
+          <span className="text-xs text-gray-500">{ind.standard.title}</span>
+        </div>
+        <h1 className="text-xl font-bold text-gray-900 mt-2">{ind.title}</h1>
       </div>
 
-      <div className="bg-white rounded-lg shadow p-6 space-y-4">
-        <div>
-          <h3 className="text-sm font-semibold text-gray-700">Description</h3>
-          <p className="text-sm text-gray-600 mt-1">{facilityIndicator.indicator.description}</p>
+      <div className="grid gap-4 sm:grid-cols-2">
+        <div className="flex items-center gap-2 rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm">
+          <BookOpen className="w-4 h-4 text-gray-500" />
+          <span className="text-gray-600">Assess: <strong>{frequencyLabel}</strong></span>
         </div>
-        <div>
-          <h3 className="text-sm font-semibold text-gray-700">Guidance</h3>
-          <p className="text-sm text-gray-600 mt-1">{facilityIndicator.indicator.guidance}</p>
+        <div className="flex items-center gap-2 rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm">
+          <FileCheck className="w-4 h-4 text-gray-500" />
+          <span className="text-gray-600">Evidence: <strong>{ind.requiresEvidence ? "Required" : "Optional"}</strong></span>
         </div>
-        <div className="flex gap-6 text-sm">
-          <div><span className="text-gray-500">Frequency: </span><span className="font-medium">{facilityIndicator.indicator.frequency}</span></div>
-          <div><span className="text-gray-500">Evidence Required: </span><span className="font-medium">{facilityIndicator.indicator.requiresEvidence ? "Yes" : "No"}</span></div>
+      </div>
+
+      <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+        <div className="bg-slate-50 px-6 py-3 border-b border-gray-100">
+          <h2 className="text-sm font-semibold text-gray-800 flex items-center gap-2">
+            <BookOpen className="w-4 h-4" />
+            What this indicator means
+          </h2>
+        </div>
+        <div className="px-6 py-4">
+          <p className="text-sm text-gray-700 leading-relaxed">{ind.description}</p>
+        </div>
+      </div>
+
+      <div className="bg-emerald-50/80 rounded-xl border border-emerald-100 overflow-hidden">
+        <div className="bg-emerald-100/50 px-6 py-3 border-b border-emerald-100">
+          <h2 className="text-sm font-semibold text-emerald-900 flex items-center gap-2">
+            <CheckCircle2 className="w-4 h-4" />
+            How to fulfill
+          </h2>
+        </div>
+        <div className="px-6 py-4 space-y-3">
+          <p className="text-sm text-emerald-900 leading-relaxed">{ind.guidance}</p>
+          <p className="text-xs text-emerald-800/90 pt-2 border-t border-emerald-200/80">{fulfillmentTip}</p>
         </div>
       </div>
 
@@ -74,7 +116,7 @@ export default async function AssessmentPage({ params }: { params: Promise<{ id:
                 {sub.evidence.length > 0 && (
                   <div className="flex gap-2 mt-2">
                     {sub.evidence.map((e) => (
-                      <a key={e.id} href={e.filePath} target="_blank" className="text-xs bg-gray-100 px-2 py-1 rounded hover:bg-gray-200">
+                      <a key={e.id} href={getUploadUrl(e.filePath)} target="_blank" rel="noopener noreferrer" className="text-xs bg-gray-100 px-2 py-1 rounded hover:bg-gray-200">
                         {e.fileName}
                       </a>
                     ))}

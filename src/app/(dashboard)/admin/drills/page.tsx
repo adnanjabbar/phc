@@ -1,8 +1,8 @@
-import Image from "next/image";
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
+import { UploadImage } from "@/components/UploadImage";
 
 export default async function DrillsPage() {
   const session = await auth();
@@ -54,7 +54,7 @@ export default async function DrillsPage() {
             {d.photos.length > 0 && (
               <div className="flex gap-2 mt-3">
                 {d.photos.slice(0, 4).map((p) => (
-                  <Image key={p.id} src={p.filePath} alt={p.caption || "Drill photo"} width={64} height={64} className="w-16 h-16 object-cover rounded border" unoptimized />
+                  <UploadImage key={p.id} filePath={p.filePath} alt={p.caption || "Drill photo"} size="thumb" className="w-16 h-16 object-cover rounded border" />
                 ))}
                 {d.photos.length > 4 && <span className="text-xs text-gray-400 self-center">+{d.photos.length - 4} more</span>}
               </div>

@@ -39,20 +39,23 @@ export default async function StandardsPage() {
       {byCategory.map((cat) => {
         const catStandards = standards.filter(s => s.category === cat.category);
         return (
-          <div key={cat.category} className="bg-white rounded-lg shadow">
-            <div className="px-6 py-4 border-b border-gray-200">
+          <div key={cat.category} className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+            <div className="px-6 py-4 border-b border-gray-100 bg-slate-50/50">
               <h2 className="font-semibold text-gray-900">{FACILITY_CATEGORY_LABELS[cat.category] || cat.category}</h2>
             </div>
             <div className="divide-y divide-gray-50">
               {catStandards.map((s) => (
-                <div key={s.id} className="px-6 py-3 flex items-center justify-between hover:bg-gray-50">
-                  <div>
+                <div key={s.id} className="px-6 py-4 flex items-start justify-between gap-4 hover:bg-gray-50/50">
+                  <div className="min-w-0 flex-1">
                     <p className="text-sm font-medium text-gray-900">{s.title}</p>
-                    <p className="text-xs text-gray-400">{s.section}</p>
+                    {s.description && (
+                      <p className="text-xs text-gray-500 mt-1 line-clamp-2">{s.description}</p>
+                    )}
+                    {s.section && <p className="text-xs text-gray-400 mt-0.5">{s.section}</p>}
                   </div>
-                  <div className="text-right">
-                    <span className="text-xs bg-blue-50 text-blue-700 px-2 py-0.5 rounded">{s._count.indicators} indicators</span>
-                    <p className="text-xs text-gray-400 mt-0.5">{s.code}</p>
+                  <div className="text-right shrink-0">
+                    <span className="text-xs bg-blue-50 text-blue-700 px-2 py-1 rounded">{s._count.indicators} indicators</span>
+                    <p className="text-xs text-gray-400 mt-1 font-mono">{s.code}</p>
                   </div>
                 </div>
               ))}

@@ -2,6 +2,7 @@ import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { COMPLIANCE_STATUS_LABELS } from "@/lib/constants";
+import { ReportDownloadButton } from "@/components/ReportDownloadButton";
 
 export default async function AdminReportsPage() {
   const session = await auth();
@@ -23,7 +24,10 @@ export default async function AdminReportsPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold text-gray-900">Compliance Reports</h1>
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold text-gray-900">Compliance Reports</h1>
+        <ReportDownloadButton />
+      </div>
       <div className="grid grid-cols-5 gap-3">
         {(["COMPLIANT", "NON_COMPLIANT", "PARTIALLY_COMPLIANT", "IN_PROGRESS", "NOT_ASSESSED"] as const).map((s) => (
           <div key={s} className="bg-white rounded-lg shadow p-3 text-center">
